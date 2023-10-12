@@ -13,5 +13,6 @@
     <li>DELETE: /usuarios/id</li>
     <li>PUT: /usuarios/id</li>
     <li>PATCH: /usuarios/id</li>
+    <li>GET: /usuarios/telefono/id</li>
 </ul>
 

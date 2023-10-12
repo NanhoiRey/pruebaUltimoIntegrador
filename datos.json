@@ -76,13 +76,13 @@
         "id": 1,
         "nombre": "Lavadora",
         "tipo": "Electrodoméstico",
-        "precio": 499.99
+        "precio": 0
       },
       {
         "id": 2,
         "nombre": "Refrigerador",
         "tipo": "Electrodoméstico",
-        "precio": 699.99
+        "precio": 0
       },
       {
         "id": 3,

@@ -1,29 +1,83 @@
+### 10)  obtener el total del stock actual de productos, la sumatoria de los precios individuales.
+GET http://localhost:1234/productos/total/
+
+
 ### Obtencion de todos los productos
-GET http://localhost:1234/productos/
+GET http://localhost:1234/productos
 
 ### Obtención de un producto específico
 
-GET http://localhost:1234/productos/3/
+GET http://localhost:1234/productos/1/
 
 ### Agregado de un producto nuevo, el body lleva el json con el objeto
 POST http://localhost:1234/productos
 Content-Type: application/json
 
 {
-    "id": 11,
-    "nombre": "Mixer multiuso ACME",
-    "tipo": "Electrodoméstico de cocina",
-    "precio": 150.15
+    "id_producto": 11,
+    "nombre": "Ejemplo a cargar",
+    "tipo": "Ejemplo de carga",
+    "precio": 22,
+    "stock" : 5
 }
 
 ### Actualización de un producto, el body lleva solo el atributo a modificar
 
-PATCH http://localhost:1234/productos/10
+PATCH http://localhost:1234/productos/2
 Content-Type: application/json
 
 {
-    "nombre": "Mixer multiuso ACME PODEROSO"
+    "nombre": "Sapeeeee"
 }
 
 ### Borrado de un producto
-DELETE http://localhost:1234/productos/7
+DELETE http://localhost:1234/productos/2
+
+
+### 6) Obtener el precio de un producto que se indica por id
+GET http://localhost:1234/productos/precio/2/
+
+### 7) Obtener el nombre de un producto que se indica por id.
+GET http://localhost:1234/productos/nombre/5
+
+
+
+
+
+
+
+### Obtención de todos los usuarios!
+GET http://localhost:1234/usuarios/
+
+### 2) Obtención de un usuario desde un id
+GET http://localhost:1234/usuarios/5/
+
+### 3) Crear un nuevo usuario
+POST http://localhost:1234/usuarios
+Content-Type: application/json
+
+{
+     "id_usuario": 12,
+     "nombre": "Agustin Rey",
+     "edad": 11,
+     "email": "agustin@example.com",
+     "telefono": "+1 012-225-1189"
+}
+### 4) Actualización de un usuario, el body lleva solo el atributo a modificar
+PATCH http://localhost:1234/usuarios/12
+Content-Type: application/json
+
+{
+    "edad": 44
+}
+
+### 5) Borrado de un usuario
+DELETE http://localhost:1234/usuarios/1
+
+
+### 8) Obtener el teléfono de un usuario que se indica por id
+GET http://localhost:1234/usuarios/telefono/5
+
+
+### 9) Obtener el nombre de un usuario que se indica por id.
+GET http://localhost:1234/usuarios/nombre/5
