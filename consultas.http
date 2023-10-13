@@ -12,19 +12,21 @@ GET http://localhost:1234/productos/1/
 ### Agregado de un producto nuevo, el body lleva el json con el objeto
 POST http://localhost:1234/productos
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZGVtaWNoIiwibml2ZWwiOjEsImV4cCI6MTY5NzIzNjQ1ODA1NSwiaWF0IjoxNjk3MjM2Mzk4fQ.QTkW_u3SryJCgPu7Qit2MnN5eYHLaC_g93PPx2MNzuQ
 
 {
-    "id_producto": 11,
-    "nombre": "Ejemplo a cargar",
-    "tipo": "Ejemplo de carga",
-    "precio": 22,
-    "stock" : 5
+    "id_producto": 4,
+    "nombre": "Secador",
+    "tipo": "Electrodomestico de baño",
+    "precio": 200,
+    "stock" : 10
 }
 
 ### Actualización de un producto, el body lleva solo el atributo a modificar
 
 PATCH http://localhost:1234/productos/2
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZGVtaWNoIiwibml2ZWwiOjEsImV4cCI6MTY5NzIzNjQ1ODA1NSwiaWF0IjoxNjk3MjM2Mzk4fQ.QTkW_u3SryJCgPu7Qit2MnN5eYHLaC_g93PPx2MNzuQ
 
 {
     "nombre": "Sapeeeee"
@@ -32,6 +34,9 @@ Content-Type: application/json
 
 ### Borrado de un producto
 DELETE http://localhost:1234/productos/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZGVtaWNoIiwibml2ZWwiOjEsImV4cCI6MTY5NzIzNjQ1ODA1NSwiaWF0IjoxNjk3MjM2Mzk4fQ.QTkW_u3SryJCgPu7Qit2MnN5eYHLaC_g93PPx2MNzuQ
+
 
 
 ### 6) Obtener el precio de un producto que se indica por id
@@ -55,9 +60,11 @@ GET http://localhost:1234/usuarios/5/
 ### 3) Crear un nuevo usuario
 POST http://localhost:1234/usuarios
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZGVtaWNoIiwibml2ZWwiOjEsImV4cCI6MTY5NzIzNjQ1ODA1NSwiaWF0IjoxNjk3MjM2Mzk4fQ.QTkW_u3SryJCgPu7Qit2MnN5eYHLaC_g93PPx2MNzuQ
+
 
 {
-     "id_usuario": 12,
+     "id_usuario": 1,
      "nombre": "Agustin Rey",
      "edad": 11,
      "email": "agustin@example.com",
@@ -66,13 +73,17 @@ Content-Type: application/json
 ### 4) Actualización de un usuario, el body lleva solo el atributo a modificar
 PATCH http://localhost:1234/usuarios/12
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZGVtaWNoIiwibml2ZWwiOjEsImV4cCI6MTY5NzIzNjQ1ODA1NSwiaWF0IjoxNjk3MjM2Mzk4fQ.QTkW_u3SryJCgPu7Qit2MnN5eYHLaC_g93PPx2MNzuQ
 
 {
     "edad": 44
 }
 
 ### 5) Borrado de un usuario
-DELETE http://localhost:1234/usuarios/1
+DELETE http://localhost:1234/usuarios/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZGVtaWNoIiwibml2ZWwiOjEsImV4cCI6MTY5NzIzODUxMjU3MywiaWF0IjoxNjk3MjM4NDUyfQ.nhsqGQblof41k67V7LbyghFXw2yfdq0_LVQ9kCNUcsw
+
 
 
 ### 8) Obtener el teléfono de un usuario que se indica por id
@@ -81,3 +92,14 @@ GET http://localhost:1234/usuarios/telefono/5
 
 ### 9) Obtener el nombre de un usuario que se indica por id.
 GET http://localhost:1234/usuarios/nombre/5
+
+
+### Request desde el formulario de logueo en el frontend
+
+POST http://localhost:1234/auth
+Content-Type: application/json 
+
+    {
+        "usuario" : "demich",
+        "password" :  "demich123"
+    }

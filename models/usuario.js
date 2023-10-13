@@ -20,6 +20,15 @@ const Usuario = db.define('Usuario', {
     telefono: {
         type: DataTypes.STRING 
     },
+    usuario: {
+        type: DataTypes.STRING 
+    },
+    password: {
+        type: DataTypes.STRING 
+    },
+    nivel: {
+        type: DataTypes.INTEGER 
+    },
 },
 {timestamps:false,
 tableName: 'usuarios'}

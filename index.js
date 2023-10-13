@@ -4,6 +4,8 @@ const require = createRequire(import.meta.url)
 const datos = require('./datos.json')
 
 import express from 'express'
+import jwt from 'jsonwebtoken'
+
 import db from './db/connection.js'
 import Producto from './models/producto.js'
 import Usuario from './models/usuario.js'
@@ -14,8 +16,101 @@ const app = express()
 
 const exposedPort = 1234
 
+//Middleware para la validaciond e los token recibidos
+function autenticacionDeToken(req, res, next){
+    const headerAuthorization = req.headers['authorization']
+
+    const tokenRecibido = headerAuthorization.split(" ")[1]
+
+    if (tokenRecibido == null){
+        return res.status(401).json({message : 'Token inválido'})
+    }
+
+    let payload = null
+    
+    try {
+        //Intentamos sacar los datos del payload del token
+        payload = jwt.verify(tokenRecibido, process.env.SECRET_KEY)
+
+        
+    } catch (error) {
+        return res.status(401).json({message : 'Token inválido'})
+        
+    }
+
+    if (Date.now() > payload.exp){
+        return res.status(401).json({message :  'Token caducado'})
+    }
+
+    //Pasó validaciones
+    req.user = payload.sub
+
+    next()
+}
+
+
+//Middleware que construye body en req de tipo post y patch
+app.use((req, res, next) =>{
+    if ((req.method !== 'POST') && (req.method !== 'PATCH')) {return next()}
+
+    if (req.headers['content-type'] !== 'application/json') { return next()}
+
+    let bodyTemp = ''
+
+    req.on('data', (chunk) => {
+        bodyTemp += chunk.toString()
+    })
+
+    req.on('end', () => {
+        req.body = JSON.parse(bodyTemp)
+        next()
+    })
+})
+
+
 app.get('/', (req, res) => {
     res.status(200).send(html)
+})
+
+
+//Endpoints para la validacion de los datos 
+app.post('/auth', async (req, res) => {
+    
+    //obtencion datos 
+    const usuarioABuscar = req.body.usuario
+    const passwordRecibido = req.body.password
+
+    let usuarioEncontrado = ''
+
+    //Comprobar usuario
+    try {
+        usuarioEncontrado = await Usuario.findAll({where:{usuario:usuarioABuscar}})
+
+        if(usuarioEncontrado == ''){ return res.status(400).json({message:'Usuario no encontrado'}) }
+    } catch (error) {
+        return res.status(400).json({message: 'Usuario no encontrado'})
+    }
+
+    //Comprobar password
+    if (usuarioEncontrado[0].password !== passwordRecibido){
+        return res.status(400).json({message: 'Password Incorrecto'})
+    }
+
+    // Generacion token
+    const sub = usuarioEncontrado[0].id
+    const usuario = usuarioEncontrado[0].usuario
+    const nivel = usuarioEncontrado[0].nivel
+
+    //firma y construccion de firma 
+    const token = jwt.sign({
+        sub,
+        usuario,
+        nivel,
+        exp: Date.now() + (60 * 1000)
+    },process.env.SECRET_KEY)
+
+    res.status(200).json({ accesToken: token })
+
 })
 
 // 10)  obtener el total del stock actual de productos, la sumatoria de los precios individuales.
@@ -66,22 +161,13 @@ app.get('/productos/:id', async (req, res) => {
 
 // ###  Agregar producto
 
-app.post('/productos', (req, res) => {
+app.post('/productos', autenticacionDeToken, async (req, res) => {
     try {
-        let bodyTemp = ''
+       
+        //datos.productos.push(req.body)
+        const productoAGuardar = new Producto(req.body)
+        await productoAGuardar.save()
 
-        req.on('data', (chunk) => {
-            bodyTemp += chunk.toString()
-        })
-    
-        req.on('end', async () => {
-            const data = JSON.parse(bodyTemp)
-            req.body = data
-            //datos.productos.push(req.body)
-            const productoAGuardar = new Producto(req.body)
-            await productoAGuardar.save()
-        })
-    
         res.status(201).json({"message": "success"})
 
     } catch (error) {
@@ -91,29 +177,18 @@ app.post('/productos', (req, res) => {
 
 // ### Modificiar producto
 
-app.patch('/productos/:id', async (req, res) => {
+app.patch('/productos/:id',autenticacionDeToken, async (req, res) => {
     let idProductoAEditar = parseInt(req.params.id)
     try {
         let productoAActualizar = await Producto.findByPk(idProductoAEditar)
 
         if (!productoAActualizar) {
             return res.status(204).json({"message":"Producto no encontrado"})}
-
-        let bodyTemp = ''
-
-        req.on('data', (chunk) => {
-            bodyTemp += chunk.toString()
-        })
-
-        req.on('end', async () => {
-            const data = JSON.parse(bodyTemp)
-            req.body = data
         
             await productoAActualizar.update(req.body)
 
             res.status(200).send('Producto actualizado')
-        })
-    
+
     } catch (error) {
         res.status(204).json({"message":"Producto no encontrado"})
     }
@@ -121,7 +196,7 @@ app.patch('/productos/:id', async (req, res) => {
 
 // ### Borrar producto
 
-app.delete('/productos/:id', async (req, res) => {
+app.delete('/productos/:id', autenticacionDeToken,  async (req, res) => {
     let idProductoABorrar = parseInt(req.params.id)
     try {
         let productoABorrar = await Producto.findByPk(idProductoABorrar);
@@ -197,22 +272,11 @@ app.get('/usuarios/:id', async (req, res) => {
 })
 
 // ### 3) Crear un nuevo usuario
-app.post('/usuarios', (req, res) => {
+app.post('/usuarios',autenticacionDeToken, async (req, res) => {
     try {
-        let bodyTemp = ''
+        const usuarioAGuardar = new Usuario(req.body)
+        await usuarioAGuardar.save()        
 
-        req.on('data', (chunk) => {
-            bodyTemp += chunk.toString()
-        })
-    
-        req.on('end', async () => {
-            const data = JSON.parse(bodyTemp)
-            req.body = data
-            //datos.productos.push(req.body)
-            const usuarioAGuardar = new Usuario(req.body)
-            await usuarioAGuardar.save()
-        })
-    
         res.status(201).json({"message": "success"})
 
     } catch (error) {
@@ -221,7 +285,7 @@ app.post('/usuarios', (req, res) => {
 })
 
 // ### 4) Actualización de un usuario, el body lleva solo el atributo a modificar
-app.patch('/usuarios/:id', async (req, res) => {
+app.patch('/usuarios/:id',autenticacionDeToken, async (req, res) => {
     let idUsuarioAEditar = parseInt(req.params.id)
     try {
         let usuarioAActualizar = await Usuario.findByPk(idUsuarioAEditar)
@@ -229,15 +293,9 @@ app.patch('/usuarios/:id', async (req, res) => {
         if (!usuarioAActualizar) {
             return res.status(204).json({"message":"Usuario no encontrado"})}
 
-        let bodyTemp = ''
-
-        req.on('data', (chunk) => {
-            bodyTemp += chunk.toString()
-        })
 
         req.on('end', async () => {
-            const data = JSON.parse(bodyTemp)
-            req.body = data
+            
         
             await usuarioAActualizar.update(req.body)
 
@@ -250,7 +308,7 @@ app.patch('/usuarios/:id', async (req, res) => {
 })
 
 // ### 5) Borrado de un usuario
-app.delete('/usuarios/:id', async (req, res) => {
+app.delete('/usuarios/:id', autenticacionDeToken, async (req, res) => {
     let idUsuarioABorrar = parseInt(req.params.id)
     try {
         let usuarioABorrar = await Usuario.findByPk(idUsuarioABorrar);
@@ -312,6 +370,7 @@ try {
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
+  
 
 app.listen( exposedPort, () => {
     console.log('Servidor escuchando en http://localhost:' + exposedPort)
