@@ -38,6 +38,7 @@ app.get('/productos/total', async (req, res) => {
 })
 
 
+// ### 1 Obtención de todos los productos
 
 app.get('/productos/', async (req, res) => {
     try {
@@ -49,6 +50,7 @@ app.get('/productos/', async (req, res) => {
         res.status(204).json({"message": error})
     }
 })
+// ###  Obtención de producto dado un id 
 
 app.get('/productos/:id', async (req, res) => {
     try {
@@ -61,6 +63,8 @@ app.get('/productos/:id', async (req, res) => {
         res.status(204).json({"message": error})
     }
 })
+
+// ###  Agregar producto
 
 app.post('/productos', (req, res) => {
     try {
@@ -84,6 +88,8 @@ app.post('/productos', (req, res) => {
         res.status(204).json({"message": "error"})
     }
 })
+
+// ### Modificiar producto
 
 app.patch('/productos/:id', async (req, res) => {
     let idProductoAEditar = parseInt(req.params.id)
@@ -112,6 +118,8 @@ app.patch('/productos/:id', async (req, res) => {
         res.status(204).json({"message":"Producto no encontrado"})
     }
 })
+
+// ### Borrar producto
 
 app.delete('/productos/:id', async (req, res) => {
     let idProductoABorrar = parseInt(req.params.id)
