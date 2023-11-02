@@ -1,105 +1,182 @@
-### 10)  obtener el total del stock actual de productos, la sumatoria de los precios individuales.
-GET http://localhost:1234/productos/total/
+#### PRODUCTOS #####
 
-
-### Obtencion de todos los productos
+### Obtención de todos los productos - (Pueden acceder todos)
 GET http://localhost:1234/productos
 
-### Obtención de un producto específico
+### Obtención de un producto específico (Pueden acceder todos)
+GET http://localhost:1234/productos/producto/3/
 
-GET http://localhost:1234/productos/1/
-
-### Agregado de un producto nuevo, el body lleva el json con el objeto
-POST http://localhost:1234/productos
+### Modificar cantidad de stock de un producto (Tiene que ser nivel 2 y estar asignado a este producto el id_proveedor)
+PATCH http://localhost:1234/productosStock/2/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZGVtaWNoIiwibml2ZWwiOjEsImV4cCI6MTY5NzIzNjQ1ODA1NSwiaWF0IjoxNjk3MjM2Mzk4fQ.QTkW_u3SryJCgPu7Qit2MnN5eYHLaC_g93PPx2MNzuQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoicmljRGVsbCIsIm5pdmVsIjoyLCJleHAiOjE2OTg5NjI3MzcxNTUsImlhdCI6MTY5ODk1MjczN30.pfyZumnRKWP91pe4LHqesuLOyAFbl7HDci_pn9kd2o4
 
 {
-    "id_producto": 4,
-    "nombre": "Secador",
-    "tipo": "Electrodomestico de baño",
-    "precio": 200,
-    "stock" : 10
+    "stock": 500
 }
 
-### Actualización de un producto, el body lleva solo el atributo a modificar
-
-PATCH http://localhost:1234/productos/2
+###  Agregado de un producto nuevo (Solo Usuario 3 "Administrador") -- Se envia el id del proveedor correspondiente
+POST http://localhost:1234/productosAgregar/2
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZGVtaWNoIiwibml2ZWwiOjEsImV4cCI6MTY5NzIzNjQ1ODA1NSwiaWF0IjoxNjk3MjM2Mzk4fQ.QTkW_u3SryJCgPu7Qit2MnN5eYHLaC_g93PPx2MNzuQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoibnJleSIsIm5pdmVsIjozLCJleHAiOjE2OTg4MjQyMjkwOTcsImlhdCI6MTY5ODgxNDIyOX0.ewzKWvzQsf-Dv2ewuiPmWwor0x0pa72NO4nOSJlcSd0
 
 {
-    "nombre": "Sapeeeee"
+
+    "nombre": "Luz Led Philips",
+    "precio": 400,
+    "stock" : 1200
 }
 
-### Borrado de un producto
-DELETE http://localhost:1234/productos/2
+### 5) Borrado de un producto (Solo Usuario 3 "Administrador")
+DELETE http://localhost:1234/productosBorrar/4
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZGVtaWNoIiwibml2ZWwiOjEsImV4cCI6MTY5NzIzNjQ1ODA1NSwiaWF0IjoxNjk3MjM2Mzk4fQ.QTkW_u3SryJCgPu7Qit2MnN5eYHLaC_g93PPx2MNzuQ
-
-
-
-### 6) Obtener el precio de un producto que se indica por id
-GET http://localhost:1234/productos/precio/2/
-
-### 7) Obtener el nombre de un producto que se indica por id.
-GET http://localhost:1234/productos/nombre/5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoibnJleSIsIm5pdmVsIjozLCJleHAiOjE2OTg5NjY2OTI3MzgsImlhdCI6MTY5ODk1NjY5Mn0.cWDjp0JnGFxKDVC4K1Py11lk1nZpxmdMP78OMfFxdF8
 
 
 
 
 
+#### TAREAS PARA ADM #### 
 
-
-### Obtención de todos los usuarios!
-GET http://localhost:1234/usuarios/
-
-### 2) Obtención de un usuario desde un id
-GET http://localhost:1234/usuarios/5/
-
-### 3) Crear un nuevo usuario
-POST http://localhost:1234/usuarios
+### Ver todos los Adm
+GET http://localhost:1234/administradores/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZGVtaWNoIiwibml2ZWwiOjEsImV4cCI6MTY5NzIzNjQ1ODA1NSwiaWF0IjoxNjk3MjM2Mzk4fQ.QTkW_u3SryJCgPu7Qit2MnN5eYHLaC_g93PPx2MNzuQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoibnJleSIsIm5pdmVsIjozLCJleHAiOjE2OTg5NjcyODQ5OTUsImlhdCI6MTY5ODk1NzI4NH0.iRwKxBbvscI1mossKLe5nTp6G4dIbD4nLBrZrFYSwIU
+
+### Ver todos los Clientes 
+GET http://localhost:1234/todosClientes/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoibnJleSIsIm5pdmVsIjozLCJleHAiOjE2OTg5NjcyODQ5OTUsImlhdCI6MTY5ODk1NzI4NH0.iRwKxBbvscI1mossKLe5nTp6G4dIbD4nLBrZrFYSwIU
+
+### Ver todos los Proveedores 
+GET http://localhost:1234/todosProveedores/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoibnJleSIsIm5pdmVsIjozLCJleHAiOjE2OTg5NjcyODQ5OTUsImlhdCI6MTY5ODk1NzI4NH0.iRwKxBbvscI1mossKLe5nTp6G4dIbD4nLBrZrFYSwIU
+
+### Nuevo Proveedor
+POST http://localhost:1234/nuevoProovedor/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoibnJleSIsIm5pdmVsIjozLCJleHAiOjE2OTg5NjcyODQ5OTUsImlhdCI6MTY5ODk1NzI4NH0.iRwKxBbvscI1mossKLe5nTp6G4dIbD4nLBrZrFYSwIU
+
+{
+    "nombre": " Mauricio Baysse",
+    "usuario": "mbaysse",
+    "password": "mbaysse2222"
+}
+### Borrar Proveedor por ID
+DELETE http://localhost:1234/borrarProveedor/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoibnJleSIsIm5pdmVsIjozLCJleHAiOjE2OTg4MjE2ODk5OTQsImlhdCI6MTY5ODgxMTY5MH0.X4DZNoBKwjBfzAA0hGv1ftygl7pRIqXPbJR1PIHhmp8
+
+### Borrar Cliente por ID
+DELETE http://localhost:1234/borrarCliente/4
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoibnJleSIsIm5pdmVsIjozLCJleHAiOjE2OTg4MjE2ODk5OTQsImlhdCI6MTY5ODgxMTY5MH0.X4DZNoBKwjBfzAA0hGv1ftygl7pRIqXPbJR1PIHhmp8
+
+### Ver un Cliente desde un id (Solo Administrador)
+GET http://localhost:1234/usuarios/3/
+Content-Type: application/json       
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoibnJleSIsIm5pdmVsIjozLCJleHAiOjE2OTg5NjcyODQ5OTUsImlhdCI6MTY5ODk1NzI4NH0.iRwKxBbvscI1mossKLe5nTp6G4dIbD4nLBrZrFYSwIU
+
+
+
+
+
+
+
+
+#### CLIENTES #### 
+
+### Crear un nuevo CLIENTE (Sin token, todos pueden generar un Usuario Cliente) 
+POST http://localhost:1234/nuevoCliente
+Content-Type: application/json
+
+{
+    "nombre": " Marta",
+    "email": "marta@email.com",
+    "usuario": "marta",
+    "password": "clave567"
+}
+
+### Hacer compra producto y enviar a ventas  (acá se ingresa la cantidad deseada y el id del producto elegido)
+POST http://localhost:1234/nuevaCompra/
+Content-Type: application/json       
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoibnJleSIsIm5pdmVsIjozLCJleHAiOjE2OTg5NjcyODQ5OTUsImlhdCI6MTY5ODk1NzI4NH0.iRwKxBbvscI1mossKLe5nTp6G4dIbD4nLBrZrFYSwIU
 
 
 {
-     "id_usuario": 1,
-     "nombre": "Agustin Rey",
-     "edad": 11,
-     "email": "agustin@example.com",
-     "telefono": "+1 012-225-1189"
+    "producto_id": 2,
+    "cantidad": 5,
 }
-### 4) Actualización de un usuario, el body lleva solo el atributo a modificar
-PATCH http://localhost:1234/usuarios/12
+
+
+
+### 5) Actualización de un usuario, el body lleva solo el atributo a modificar (Solo Administrador)
+PATCH http://localhost:1234/usuariosModificar/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZGVtaWNoIiwibml2ZWwiOjEsImV4cCI6MTY5NzIzNjQ1ODA1NSwiaWF0IjoxNjk3MjM2Mzk4fQ.QTkW_u3SryJCgPu7Qit2MnN5eYHLaC_g93PPx2MNzuQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZWR1TWVzc2kiLCJuaXZlbCI6MSwiZXhwIjoxNjk4NjA4MTc5MDk0LCJpYXQiOjE2OTg1OTgxNzl9.EeaIP94SwgY_VhsAcbehVJoogYQEisCuCZeQ7j4QHPM
 
 {
-    "edad": 44
+    "edad": 35
 }
 
-### 5) Borrado de un usuario
-DELETE http://localhost:1234/usuarios/2
+
+
+
+
+
+#### ACCIONES DEL CARRITO #####
+
+### 1) Crear un carrito  (Usuario)
+POST http://localhost:1234/carritos/nuevo
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZGVtaWNoIiwibml2ZWwiOjEsImV4cCI6MTY5NzIzODUxMjU3MywiaWF0IjoxNjk3MjM4NDUyfQ.nhsqGQblof41k67V7LbyghFXw2yfdq0_LVQ9kCNUcsw
+
+{
+     "id_carrito": 3,
+     "id_producto": 0,
+     "nombre": "",
+     "precio": 0,
+     "cantidad": 0  
+}
+
+# ### 2) Sumar producto al carrito desde un id (Usuario)
+# PATCH http://localhost:1234/carrito/1/2
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoibmljb1JleSIsIm5pdmVsIjozLCJleHAiOjE2OTgxMTk5MjQyMjksImlhdCI6MTY5ODExNjMyNH0.vgMNsI7D587AjcEJGAgK3MS548b9prI4MnxD5mLx4OE
+
+# {
+   
+# }
 
 
 
-### 8) Obtener el teléfono de un usuario que se indica por id
-GET http://localhost:1234/usuarios/telefono/5
 
 
-### 9) Obtener el nombre de un usuario que se indica por id.
-GET http://localhost:1234/usuarios/nombre/5
 
 
-### Request desde el formulario de logueo en el frontend
+# ### 10)  obtener el total del stock actual de productos, la sumatoria de los precios individuales.
+# GET http://localhost:1234/productos/total/
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+### GENERAR TOKEN
 POST http://localhost:1234/auth
 Content-Type: application/json 
 
     {
-        "usuario" : "demich",
-        "password" :  "demich123"
+        "usuario" : "nrey",
+        "password" :  "nrey123"
     }
+
+

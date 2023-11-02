@@ -1,24 +1,18 @@
 import { DataTypes } from 'sequelize'
 import db from '../db/connection.js'
 
-const Usuario = db.define('Usuario', {
-    id_usuario: { 
+const Cliente = db.define('Cliente', {
+    clientes_id: { 
         type: DataTypes.INTEGER,
         primaryKey: true, // Esto indica que es la clave primaria 
         autoIncrement: true, // Esto indica que es una columna serial
-        field: 'id_usuario', // Esto especifica el nombre real de la columna en la base de datos 
+        field: 'clientes_id', // Esto especifica el nombre real de la columna en la base de datos 
     }, 
     nombre: {
         type: DataTypes.STRING 
     },
-    edad: {
-        type: DataTypes.INTEGER 
-    },
     email: {
-        type: DataTypes.STRING 
-    },
-    telefono: {
-        type: DataTypes.STRING 
+        type: DataTypes.INTEGER 
     },
     usuario: {
         type: DataTypes.STRING 
@@ -31,8 +25,8 @@ const Usuario = db.define('Usuario', {
     },
 },
 {timestamps:false,
-tableName: 'usuarios'}
+tableName: 'clientes'}
 )
 
-export default Usuario
+export default Cliente 
 

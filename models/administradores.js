@@ -1,29 +1,32 @@
 import { DataTypes } from 'sequelize'
 import db from '../db/connection.js'
 
-const Producto = db.define('Producto', {
-    id_producto: { 
+const Administrador = db.define('Administrador', {
+    admin_id: { 
         type: DataTypes.INTEGER,
         primaryKey: true, // Esto indica que es la clave primaria 
         autoIncrement: true, // Esto indica que es una columna serial
-        field: 'id_producto', // Esto especifica el nombre real de la columna en la base de datos 
+        field: 'admin_id', // Esto especifica el nombre real de la columna en la base de datos 
     }, 
     nombre: {
         type: DataTypes.STRING 
     },
-    tipo: {
+    email: {
+        type: DataTypes.INTEGER 
+    },
+    usuario: {
         type: DataTypes.STRING 
     },
-    precio: {
-        type: DataTypes.FLOAT
+    password: {
+        type: DataTypes.STRING 
     },
-    stock: {
-        type: DataTypes.FLOAT
+    nivel: {
+        type: DataTypes.INTEGER 
     },
 },
 {timestamps:false,
-tableName:'productos'}
+tableName: 'administradores'}
 )
 
-export default Producto
+export default Administrador 
 
